@@ -72,7 +72,6 @@ def run_measurement():
 def startstop(event):
     global measure, filename, stream, shutdown_counter
     if event.action in ('pressed'):
-        print(event)
         if event.direction is 'down':
             measure = False
             time.sleep(0.1)
@@ -87,7 +86,6 @@ def startstop(event):
             measure = True
             shutdown_counter = 0
         elif event.direction is 'middle':
-            print(shutdown_counter)
             shutdown()
 
 measure = False
