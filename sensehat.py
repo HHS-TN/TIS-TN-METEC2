@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 try:
     from sense_hat import SenseHat
 except:
@@ -42,6 +44,9 @@ def randnumber(value):
 def start():
     sense.show_letter('R',text_colour=[255,0,0])
 
+def pause():
+    sense.show_letter('P', text_colour=[255,255,0])
+
 def stop():
     sense.set_pixels([[0,0,0]]*64)
 
@@ -59,14 +64,15 @@ def shutdown():
             stream.close()
         stop()
         sense.set_pixel(7,7,10,10,10)
+        time.sleep(0.5)
         os.system('sudo shutdown -h now')
 
 
 def run_measurement():
     data=sense.get_accelerometer_raw()
-    rgb1=randnumber(data['x'])
-    rgb2=randnumber(data['y'])
-    rgb3=randnumber(data['z'])
+    #rgb1=randnumber(data['x'])
+    #rgb2=randnumber(data['y'])
+    #rgb3=randnumber(data['z'])
     stream.write('%s,%s,%s,%s\n'%(time.time(), data['x'], data['y'], data['z']))
 
 def startstop(event):
@@ -78,6 +84,7 @@ def startstop(event):
             stop()
             if not stream.closed:
                 stream.close()
+            pause()
             shutdown_counter=0
         elif event.direction is 'up':
             if stream.closed:
