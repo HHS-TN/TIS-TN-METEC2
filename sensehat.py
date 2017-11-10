@@ -11,68 +11,36 @@ import time
 import random
 import os
 
+DEBUG=0 #no printing
 
-global stream, shutdown_counter, measure
-(fileid, filename) = tempfile.mkstemp(suffix='.csv', prefix='acc_', dir=tempfile._os.getcwd()+'/data/')
-print('Output gaat naar: %s'%(filename))
-stream = open(filename, 'a')
 
-start=50
-stop=255
-step=50
+def letter_colour(L,C):
+    ''' Function to display a letter (L) with colour (C) on screen '''
+    sense.show_letter(L,text_colour=C)
 
-sense=SenseHat()
-measure = False
-rgb1=100
-rgb2=100
-rgb3=100
-shutdown_counter = 0
-
-def clamp(number, min_number=50, max_number=255):
-    return min(max_number, max(min_number, value))
-
-def adddata(number,add):
-    add = abs(int(add))
-    return clamp(number+add)
-
-def randnumber(value):
-    number = int(abs(value)*200+50)
-    if number > 254:
-        number =250
-    return number
-
-def start():
-    sense.show_letter('R',text_colour=[255,0,0])
-
-def pause():
-    sense.show_letter('P', text_colour=[255,255,0])
-
-def stop():
+def reset_screen():
     sense.set_pixels([[0,0,0]]*64)
 
 def shutdown():
     global stream,shutdown_counter
     if shutdown_counter == 0:
-        stop()
-        sense.show_letter('Q', text_colour=[0,255,0])
+        reset_screen()
+        letter_colour('Q', [0,255,0])
         shutdown_counter = 1
     elif shutdown_counter == 1:
-        sense.show_letter('Q', text_colour=[0,0,255])
+        letter_colour('Q', [0,0,255])
         shutdown_counter = 2
     elif shutdown_counter == 2:
         if not stream.closed:
             stream.close()
-        stop()
-        sense.set_pixel(7,7,10,10,10)
+        reset_screen()
         time.sleep(0.5)
+        reset_screen()
         os.system('sudo shutdown -h now')
 
 
 def run_measurement():
     data=sense.get_accelerometer_raw()
-    #rgb1=randnumber(data['x'])
-    #rgb2=randnumber(data['y'])
-    #rgb3=randnumber(data['z'])
     stream.write('%s,%s,%s,%s\n'%(time.time(), data['x'], data['y'], data['z']))
 
 def startstop(event):
@@ -81,22 +49,44 @@ def startstop(event):
         if event.direction is 'down':
             measure = False
             time.sleep(0.1)
-            stop()
+            reset_screen()
             if not stream.closed:
                 stream.close()
-            pause()
+            letter_colour('P', [0,255,0])
             shutdown_counter=0
         elif event.direction is 'up':
             if stream.closed:
                 stream = open(filename,'a')
-            start()
+            letter_colour('R', [255,0,0])
             measure = True
             shutdown_counter = 0
+        elif event.direction is 'left':
+            letter_colour('%s'%(accel_range), [255,0,255])
         elif event.direction is 'middle':
             shutdown()
 
+global stream, shutdown_counter, measure 
+# create unique filename in ./data/
+(fileid, filename) = tempfile.mkstemp(suffix='.csv', prefix='acc_', dir=tempfile._os.getcwd()+'/data/')
+if DEBUG:
+    print('Output gaat naar: %s'%(filename))
+stream = open(filename, 'a')
+
+# initialise sensor and set start values for counters
+sense=SenseHat()
+reset_screen()
+rtimulib_config = sense._get_settings_file('RTIMULib')
+accel_range = rtimulib_config.LSM9DS1AccelFsr
+
 measure = False
+shutdown_counter = 0
+
+# send joystick values to startstop function
 sense.stick.direction_any = startstop
+
+letter_colour('?', [30,255,30])
+
+# start endless loop
 while True:
     if measure:
         run_measurement()

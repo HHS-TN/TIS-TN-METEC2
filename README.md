@@ -17,8 +17,14 @@ De software wordt automatisch opgestard bij het aanzetten van de Raspberrypi. Al
 Met de joystick kan de Raspberrypi bedient worden. 
  * start: joystick omhoog
  * pauze: joystik omlaag
+ * instellingen opvragen: joystick naar links
  * afsluiten: 3x achter elkaar joystick indrukken
  
+Als de instellingen opgevraagd worden wordt de numerieke waarde van de
+variabele ```LSM9DS1AccelFsr``` weergegeven.  Door in de ```RTIMULib.ini```
+file deze variabele aan te passen kan de gevoeligheid van de versnellingssensor
+aangepast worden.
+
 Bij afsluiten wordt de Raspberrypi uitgezet. Wacht nog een halve minuut voordat de USB-stick verwijdert kan worden. 
 
 # Crontab
