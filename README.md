@@ -13,6 +13,9 @@ In de eerste column staat de tijd, de volgende zijn de versnellingen (in g, m/s^
 
 De software wordt automatisch opgestard bij het aanzetten van de Raspberrypi. Als er een USB-stick aanwezig is wordt deze in de ```/home/pi/data``` directory gemount zodat de datafile op de usb-stick weggeschreven wordt. Hiervoor is een vFAT geformatteerde USB-stick nodig. 
 
+Als in de root van de USB-stick de file ```RTIMULib.ini``` staat wordt deze
+gebruikt in plaats van de standaard file. 
+
 ## Bediening
 Met de joystick kan de Raspberrypi bedient worden. 
  * start: joystick omhoog
@@ -21,9 +24,13 @@ Met de joystick kan de Raspberrypi bedient worden.
  * afsluiten: 3x achter elkaar joystick indrukken
  
 Als de instellingen opgevraagd worden wordt de numerieke waarde van de
-variabele ```LSM9DS1AccelFsr``` weergegeven.  Door in de ```RTIMULib.ini```
-file deze variabele aan te passen kan de gevoeligheid van de versnellingssensor
-aangepast worden.
+variabele ```LSM9DS1AccelFsr``` weergegeven.  Door een door de user in te
+stellen  ```RTIMULib.ini```
+file op de USB-stick te plaatsen is deze variabele aan te passen en kan onder
+andere de gevoeligheid van de versnellingssensor aangepast worden. 
+
+Als er geen ```RTIMULib.ini``` file op de USB-stick geplaatst is wordt de
+standaard file gebruikt. 
 
 Bij afsluiten wordt de Raspberrypi uitgezet. Wacht nog een halve minuut voordat de USB-stick verwijdert kan worden. 
 

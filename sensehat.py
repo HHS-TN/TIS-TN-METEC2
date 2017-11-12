@@ -1,5 +1,17 @@
 #!/usr/bin/env python3
 
+import os
+
+# check if RTIMULib file is ok and copy file from #USB to usuable location
+BASEPATH='/home/pi/TIS-TN-METR2-code/'
+USBRTIMU=BASEPATH+'/data/RTIMULib.ini'
+os.system('cp RTIMULib.org RTIMULib.ini')
+
+# test if user is using own RTIMULib.ini file from USB-stick, and use the file
+if (os.path.isfile(USBRTIMU)):
+    os.system('cp %s %sRTIMULib.ini'%(USBRTIMU, BASEPATH))
+
+
 try:
     from sense_hat import SenseHat
 except:
@@ -9,7 +21,6 @@ except:
 import tempfile
 import time
 import random
-import os
 
 DEBUG=0 #no printing
 
