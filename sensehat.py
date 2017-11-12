@@ -5,11 +5,13 @@ import os
 # check if RTIMULib file is ok and copy file from #USB to usuable location
 BASEPATH='/home/pi/TIS-TN-METR2-code/'
 USBRTIMU=BASEPATH+'/data/RTIMULib.ini'
-os.system('cp RTIMULib.org RTIMULib.ini')
+RTIMUPATH='/home/pi/.config/sense_hat/RTIMULib.ini'
+os.system('cp %s/RTIMULib.org %s'%(BASEPATH,RTIMUPATH))
 
 # test if user is using own RTIMULib.ini file from USB-stick, and use the file
 if (os.path.isfile(USBRTIMU)):
-    os.system('cp %s %sRTIMULib.ini'%(USBRTIMU, BASEPATH))
+    print("USB-IMU")
+    os.system('cp %s %s'%(USBRTIMU, RTIMUPATH))
 
 
 try:
@@ -78,7 +80,7 @@ def startstop(event):
 
 global stream, shutdown_counter, measure 
 # create unique filename in ./data/
-(fileid, filename) = tempfile.mkstemp(suffix='.csv', prefix='acc_', dir=tempfile._os.getcwd()+'/data/')
+(fileid, filename) = tempfile.mkstemp(suffix='.csv', prefix='acc_', dir=BASEPATH+'data/')
 if DEBUG:
     print('Output gaat naar: %s'%(filename))
 stream = open(filename, 'a')
