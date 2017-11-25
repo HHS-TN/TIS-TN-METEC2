@@ -1,18 +1,26 @@
 #!/usr/bin/env python3
 
-import os
+import os,subprocess
 
 # check if RTIMULib file is ok and copy file from #USB to usuable location
 BASEPATH='/home/pi/TIS-TN-METR2-code/'
-USBRTIMU=BASEPATH+'/data/RTIMULib.ini'
+USBRTIMU=BASEPATH+'data/RTIMULib.ini'
 RTIMUPATH='/home/pi/.config/sense_hat/RTIMULib.ini'
-os.system('cp %s/RTIMULib.org %s'%(BASEPATH,RTIMUPATH))
+def copy(fh):
+    p=subprocess.Popen('cp %s %s'%(fh,RTIMUPATH),stdout=subprocess.PIPE, shell=True)
+    (output,err) = p.communicate()
+    p_status = p.wait()
+    print(p_status)
+
+copy(BASEPATH+'RTIMULib.org')
 
 # test if user is using own RTIMULib.ini file from USB-stick, and use the file
 if (os.path.isfile(USBRTIMU)):
     print("USB-IMU")
-    os.system('cp %s %s'%(USBRTIMU, RTIMUPATH))
+    copy(USBRTIMU)
 
+
+os.exit()
 
 try:
     from sense_hat import SenseHat
