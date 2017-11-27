@@ -19,9 +19,6 @@ if (os.path.isfile(USBRTIMU)):
     print("USB-IMU")
     copy(USBRTIMU)
 
-
-os.exit()
-
 try:
     from sense_hat import SenseHat
 except:
