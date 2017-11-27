@@ -34,8 +34,11 @@ standaard file gebruikt.
 
 Bij afsluiten wordt de Raspberrypi uitgezet. Wacht nog een halve minuut voordat de USB-stick verwijdert kan worden. 
 
-# Crontab
-```@reboot /home/pi/TIS-TN-METR2-code/sensehat.py```
+# bashrc
+Op laatste regel toegevoegd (zodat code automatisch bij inloggen van de user ```pi``` opgestart wordt:
+```
+python3 ~/TIS-TN-METR2-code/sensehat.py
+```
 
 # RTIMUlib
 De RTIMUlib file regelt alle settings van de sensoren. Hier kunnen eventueel de gevoeligheid aangepast worden.
