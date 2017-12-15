@@ -18,11 +18,12 @@ gebruikt in plaats van de standaard file.
 
 ## Bediening
 Met de joystick kan de Raspberrypi bedient worden. 
- * start: joystick omhoog
- * pauze: joystik omlaag
- * instellingen opvragen: joystick naar links
- * afsluiten: 3x achter elkaar joystick indrukken
- 
+ * start: joystick omhoog (R)
+ * pauze: joystik omlaag (P)
+ * instellingen opvragen: joystick naar links (0,1,2 of 3)
+ * afsluiten: 3x achter elkaar joystick indrukken (Q)
+ * foutmelding: X op LED-scherm weergegeven
+
 Als de instellingen opgevraagd worden wordt de numerieke waarde van de
 variabele ```LSM9DS1AccelFsr``` weergegeven.  Door een door de user in te
 stellen  ```RTIMULib.ini```
@@ -31,6 +32,8 @@ andere de gevoeligheid van de versnellingssensor aangepast worden.
 
 Als er geen ```RTIMULib.ini``` file op de USB-stick geplaatst is wordt de
 standaard file gebruikt. 
+
+Bij een foutmelding (X op het scherm) kan de Raspberrypi de data niet wegschrijven naar de USB-stick. Sluit de Raspberrypi af en controleer de USB-stick op fouten.
 
 Bij afsluiten wordt de Raspberrypi uitgezet. Wacht nog een halve minuut voordat de USB-stick verwijdert kan worden. 
 
@@ -41,7 +44,7 @@ python3 ~/TIS-TN-METR2-code/sensehat.py
 ```
 
 # RTIMUlib
-De RTIMUlib file regelt alle settings van de sensoren. Hier kunnen eventueel de gevoeligheid aangepast worden.
+De RTIMUlib file regelt alle settings van de sensoren. Hier kunnen eventueel de gevoeligheid aangepast worden. Let erop dat het een file is met linux file-ending. Notepad kan hier niet goed mee omgaan, de IDLE editor wel. 
 
 # SSH of inloggen
 De raspberrypi is via ssh en met HDMI en toetsenbord/muis te verbinden. Het useraccount is het standaard pi account:

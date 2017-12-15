@@ -58,8 +58,14 @@ def shutdown():
 
 
 def run_measurement():
+    global measure
     data=sense.get_accelerometer_raw()
-    stream.write('%s,%s,%s,%s\n'%(time.time(), data['x'], data['y'], data['z']))
+    try:
+        stream.write('%s,%s,%s,%s\n'%(time.time(), data['x'], data['y'], data['z']))
+    except:
+        letter_colour('X', [255,255,255])
+        measure = False
+
 
 def startstop(event):
     global measure, filename, stream, shutdown_counter
