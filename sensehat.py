@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-
+# github test
 import os,subprocess
 
 # check if RTIMULib file is ok and copy file from #USB to usuable location
