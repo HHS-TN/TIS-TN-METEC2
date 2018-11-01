@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 # github test
 import os,subprocess
+import sys
 
 # check if RTIMULib file is ok and copy file from #USB to usuable location
 BASEPATH='/home/pi/TIS-TN-METR2-code/'
@@ -68,7 +69,7 @@ def run_measurement():
 
 
 def startstop(event):
-    global measure, filename, stream, shutdown_counter
+    global measure, filename, stream, shutdown_counter, run
     if event.action in ('pressed'):
         if event.direction is 'down':
             measure = False
@@ -88,8 +89,15 @@ def startstop(event):
             letter_colour('%s'%(accel_range), [255,0,255])
         elif event.direction is 'middle':
             shutdown()
+        elif event.direction is 'right':
+            if shutdown_counter > 1:
+                if not stream.closed:
+                    stream.close()
+                reset_screen()
+                print('shutdown')
+                run = False
 
-global stream, shutdown_counter, measure 
+global stream, shutdown_counter, measure, run
 # create unique filename in ./data/
 (fileid, filename) = tempfile.mkstemp(suffix='.csv', prefix='acc_', dir=BASEPATH+'data/')
 if DEBUG:
@@ -111,7 +119,9 @@ sense.stick.direction_any = startstop
 letter_colour('?', [30,255,30])
 
 # start endless loop
-while True:
+
+run = True
+while run:
     if measure:
         run_measurement()
     
