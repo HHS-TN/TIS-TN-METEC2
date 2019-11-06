@@ -13,12 +13,13 @@ def copy(fh):
     p_status = p.wait()
     print(p_status)
 
-copy(BASEPATH+'RTIMULib.org')
-
 # test if user is using own RTIMULib.ini file from USB-stick, and use the file
 if (os.path.isfile(USBRTIMU)):
     print("USB-IMU")
     copy(USBRTIMU)
+else:
+    print("STANDAARD-IMU")
+    copy(BASEPATH+'RTIMULib.ini')
 
 try:
     from sense_hat import SenseHat
@@ -87,6 +88,7 @@ def startstop(event):
             shutdown_counter = 0
         elif event.direction is 'left':
             letter_colour('%s'%(accel_range), [255,0,255])
+            shutdown_counter = 0
         elif event.direction is 'middle':
             shutdown()
         elif event.direction is 'right':
@@ -96,6 +98,7 @@ def startstop(event):
                 reset_screen()
                 print('shutdown')
                 run = False
+            shutdown_counter = 0
 
 global stream, shutdown_counter, measure, run
 # create unique filename in ./data/
